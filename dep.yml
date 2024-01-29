@@ -1,34 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-deployment
+  name: task-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: task
   template:
     metadata:
       labels:
-        app: my-app
+        app: task
     spec:
       containers:
-      - name: my-container
+      - name: task-container
         image: francisgrane/task:latest
         ports:
         - containerPort: 80
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-service
+  name: task-service
 spec:
-  type: NodePort
-  ports:
-  - port: 80
-    targetPort: 80
-    nodePort: 32000
   selector:
-    app: my-app
+    app: task
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
 
